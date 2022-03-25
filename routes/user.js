@@ -4,7 +4,7 @@ const usersController = require('../controllers/usersController');
 const userValidator = require('../validations/userValidator');
 const jwtToken = require("../validations/jwtValidation");
 
-router.get('/user', jwtToken.validateToken, userValidator.id, usersController.getUser);
+router.get('/user', userValidator.id, usersController.getUser);
 router.get('/users', jwtToken.validateToken, usersController.getUsers);
 router.post('/user', userValidator.add, usersController.postUser);
 router.post('/login', userValidator.id, usersController.getLogin);
