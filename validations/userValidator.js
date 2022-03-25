@@ -1,25 +1,25 @@
 const { check, validationResult } = require('express-validator');
 
 const generateUserValidators = () => [
-    check('name').notEmpty().isLength({max:50}).withMessage("Invalid name"),
-    check('lastname').notEmpty().isLength({max:50}).withMessage("Invalid lastname"),
-    check('phone').notEmpty().isLength({min:10, max:50}).isNumeric().withMessage("Invalid phone (10 numbers)"),
-    check('address').notEmpty().isLength({max:150}).withMessage("Invalid address"),
+   check('name').notEmpty().isLength({max:50}).withMessage("Invalid name"),
+   check('lastname').notEmpty().isLength({max:50}).withMessage("Invalid lastname"),
+   check('phone').notEmpty().isLength({min:10, max:10}).isNumeric().withMessage("Invalid phone (10 numbers)"),
+   check('adress').notEmpty().isLength({max:150}).withMessage("Invalid adress")
 ]
+
 
 const generateIdValidators = () => [
     check('id').notEmpty().isNumeric().withMessage("Invalid id"),
 ]
-
 const updateUserValidators = () => [
     check('id').notEmpty().isNumeric().withMessage("Invalid id"),
-    check('name').notEmpty().isLength({max:50}).withMessage("Invalid name"),
-    check('lastname').notEmpty().isLength({max:50}).withMessage("Invalid lastname"),
-    check('phone').notEmpty().isLength({min:10, max:50}).isNumeric().withMessage("Invalid phone (10 numbers)"),
-    check('address').notEmpty().isLength({max:150}).withMessage("Invalid address"),
-]
+    check('name').isLength({max:50}).withMessage("Invalid name"),
+    check('lastname').isLength({max:50}).withMessage("Invalid lastname"),
+    check('phone').optional().isLength({min:10, max:10}).isNumeric().withMessage("Invalid phone (10 numbers)"),
+    check('adress').isLength({max:150}).withMessage("Invalid adress")
+ ]
 
-const reporter = (req,res,next) => {
+const reporter = (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(404).json({
@@ -27,22 +27,24 @@ const reporter = (req,res,next) => {
             "code" : 404,
             "message" : errors,
             "data" : []
+
         });
     }
-    next();
+  next();  
 }
 
 module.exports = {
-    add:[
+    add: [
         generateUserValidators(),
         reporter
     ],
-    id:[
+    id: [
         generateIdValidators(),
         reporter
     ],
-    update :[
+    update:
+    [
         updateUserValidators(),
         reporter
     ]
-}
+};
