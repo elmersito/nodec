@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const petsController = require('../controllers/petsController');
-router.get('/pet', petsController.getPet);
+const petValidator = require('../validations/petValidator');
+router.get('/pet', petValidator.id, petsController.getPet);
 router.get('/pets', petsController.getPets);
-router.post('/pet', petsController.postPet);
-router.put('/pet', petsController.putPet);
-router.delete('/pet', petsController.deletePet);
+router.post('/pet', petValidator.add, petsController.postPet);
+router.post('/login', petValidator.id, petsController.getLogin);
+router.put('/pet', petValidator.update, petsController.putPet);
+router.delete('/pet', petValidator.id, petsController.deletePet);
 
 module.exports = router;
