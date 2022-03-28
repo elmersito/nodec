@@ -1,50 +1,46 @@
 const { check, validationResult } = require('express-validator');
 
-const generatePetValidators = () => [
-   check('alias').notEmpty().isLength({max:150}).withMessage("Invalid alias"),
-   check('type').notEmpty().isIn(['DOG','CAT']).withMessage("Invalid type"),
-   check('color').notEmpty().isLength({min:20, max:20}).withMessage("Invalid color"),
-   check('notes').notEmpty().isLength({max:150}).withMessage("Invalid notes")
+const generatePetsValidators = () => [
+    check('alias').notEmpty().isLength({ max: 150 }).withMessage('Invalid alias'),
+    check('type').notEmpty().isIn('DOG', 'CAT').withMessage('Invalid type'),
+    check('color').notEmpty().isLength({ max: 20 }).isNumeric().withMessage('Invalid phone'),
+    check('notes').notEmpty().isLength().withMessage('Invalid note')
 ]
-
 
 const generateIdValidators = () => [
-    check('id').notEmpty().isNumeric().withMessage("Invalid id"),
+    check('id').notEmpty().isNumeric().withMessage('Invalid ID'),
 ]
-const updatePetValidators = () => [
-    check('id').notEmpty().isNumeric().withMessage("Invalid id"),
-    check('alias').isLength({max:150}).withMessage("Invalid alias"),
-    check('type').isIn(['DOG','CAT']).withMessage("Invalid type"),
-    check('color').isLength({min:20, max:20}).withMessage("Invalid color"),
-    check('notes').isLength({max:150}).withMessage("Invalid notes")
- ]
 
+const updatePetsValidators = () => [
+    check('id').notEmpty().isNumeric().withMessage('Invalid ID'),
+    check('alias').notEmpty().isLength({ max: 150 }).withMessage('Invalid alias'),
+    check('type').notEmpty().isIn('DOG', 'CAT').withMessage('Invalid type'),
+    check('color').notEmpty().isLength({ max: 20 }).isNumeric().withMessage('Invalid phone'),
+    check('notes').notEmpty().isLength().withMessage('Invalid note')
+]
 const reporter = (req, res, next) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
+    if (!errors.isEmpty()) {
         return res.status(404).json({
-            "success" : false,
-            "code" : 404,
-            "message" : errors,
-            "data" : []
-
+            "success": false,
+            "code": 404,
+            "message": errors,
+            "data": []
         });
     }
-  next();  
+    next();
 }
-
 module.exports = {
     add: [
-        generatePetValidators(),
+        generatePetsValidators(),
+        reporter
+    ],
+    update: [
+        updatePetsValidators(),
         reporter
     ],
     id: [
         generateIdValidators(),
         reporter
-    ],
-    update:
-    [
-        updatePetValidators(),
-        reporter
     ]
-};
+}
