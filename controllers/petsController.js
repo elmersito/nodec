@@ -1,22 +1,5 @@
 let controller = {};
 let format = require("../format").format;
-const jwt = require("jsonwebtoken");
-const db =require("../database").config;
-
-controller.getLogin = (req, res) =>{
-    const pet ={
-        id : req.body.id,
-        time : new Date().getTime()
-    };
-    const token = jwt.sign({pet}, db.secret_key);
-    res.status(200);
-    format.success = true;
-    format.code = 200;
-    format.message = "Token";
-    format.data = token;
-    res.json(format);
-};
-
 
 controller.getPet = (req, res) =>
 {
