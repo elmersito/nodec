@@ -1,49 +1,44 @@
 const { check, validationResult } = require('express-validator');
-const { DATETIME } = require('mysql/lib/protocol/constants/types');
 
-const generateAdoptionValidators = () => [
-   check('user_id').notEmpty().isLength({max:11}).withMessage("Invalid user_id"),
-   check('pet_id').notEmpty().isLength({max:11}).withMessage("Invalid pet_id"),
-   check('date').notEmpty().isLength(DATETIME).isNumeric().withMessage("Invalid date")
-  
+const generateAdoptionsValidators = () => [
+    check('user_id').notEmpty().isNumeric().withMessage('Invalid user_id'),
+    check('pet_id').notEmpty().isNumeric().withMessage('Invalid pet_id'),
+    check('date').notEmpty().isDate().withMessage('Invalid date'),
 ]
-
 
 const generateIdValidators = () => [
-    check('id').notEmpty().isNumeric().withMessage("Invalid id"),
+    check('id').notEmpty().isNumeric().withMessage('Invalid ID'),
 ]
-const updateAdoptionValidators = () => [
-    check('id').notEmpty().isNumeric().withMessage("Invalid id"),
-    check('user_id').isLength({max:11}).withMessage("Invalid user_id"),
-    check('pet_id').isLength({max:11}).withMessage("Invalid pet_id")
- ]
 
+const updateAdoptionsValidators = () => [
+    check('id').notEmpty().isNumeric().withMessage('Invalid ID'),
+    check('user_id').notEmpty().isNumeric().withMessage('Invalid user_id'),
+    check('pet_id').notEmpty().isNumeric().withMessage('Invalid pet_id'),
+    check('date').notEmpty().isDate().withMessage('Invalid date'),
+]
 const reporter = (req, res, next) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
+    if (!errors.isEmpty()) {
         return res.status(404).json({
-            "success" : false,
-            "code" : 404,
-            "message" : errors,
-            "data" : []
-
+            "success": false,
+            "code": 404,
+            "message": errors,
+            "data": []
         });
     }
-  next();  
+    next();
 }
-
 module.exports = {
     add: [
-        generateAdoptionValidators(),
+        generateAdoptionsValidators(),
+        reporter
+    ],
+    update: [
+        updateAdoptionsValidators(),
         reporter
     ],
     id: [
         generateIdValidators(),
         reporter
-    ],
-    update:
-    [
-        updateAdoptionValidators(),
-        reporter
     ]
-};
+}
