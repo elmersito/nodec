@@ -1,6 +1,5 @@
 let controller = {};
 let format = require("../format").format;
-
 controller.getPet = (req, res) =>
 {
     const sql = "SELECT * FROM pets WHERE id = ?";
