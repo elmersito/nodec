@@ -1,32 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@elmersito 
-elmersito
-/
-nodec
-Public
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-nodec/controllers/usersController.js /
-@elmersito
-elmersito Update usersController.js
-Latest commit 0c34b11 34 minutes ago
- History
- 1 contributor
-233 lines (222 sloc)  6.78 KB
-   
 let controller = {};
 let format = require("../format").format;
 const jwt = require("jsonwebtoken");
