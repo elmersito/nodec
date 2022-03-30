@@ -1,46 +1,55 @@
-const { check, validationResult } = require('express-validator');
+const{check, validationResult } = require("express-validator");
+const { is } = require("express/lib/request");
 
-const generatePetsValidators = () => [
-    check('alias').notEmpty().isLength({ max: 150 }).withMessage('Invalid alias'),
-    check('type').notEmpty().isIn('DOG', 'CAT').withMessage('Invalid type'),
-    check('color').notEmpty().isLength({ max: 20 }).isNumeric().withMessage('Invalid phone'),
-    check('notes').notEmpty().isLength().withMessage('Invalid note')
+const generatePetValidator = () =>[
+
+    check("alias").notEmpty().isLength({max:50}).withMessage("Invalid alias"),
+    check("type").notEmpty().isIn(["DOG","CAT"]).withMessage("Invalid pet is dog o cat"),
+    check("color").notEmpty().isLength({max:50}).withMessage("Invalid color "),
+    check("notes").notEmpty().isLength({max:50}).withMessage("Invalid notes"),
 ]
 
-const generateIdValidators = () => [
-    check('id').notEmpty().isNumeric().withMessage('Invalid ID'),
+const generateIdPetValidator = () => [
+    check("id").notEmpty().isNumeric().withMessage("ID invalid not found")
 ]
 
-const updatePetsValidators = () => [
-    check('id').notEmpty().isNumeric().withMessage('Invalid ID'),
-    check('alias').notEmpty().isLength({ max: 150 }).withMessage('Invalid alias'),
-    check('type').notEmpty().isIn('DOG', 'CAT').withMessage('Invalid type'),
-    check('color').notEmpty().isLength({ max: 20 }).isNumeric().withMessage('Invalid phone'),
-    check('notes').notEmpty().isLength().withMessage('Invalid note')
+const updatePetValidator = () => [
+    check("id").notEmpty().isNumeric().withMessage("ID invalid not found"),
+    check("alias").notEmpty().isLength({max:50}).withMessage("Invalid alias"),
+    check("type").notEmpty().isIn(["DOG","CAT"]).withMessage("Invalid pet is dog o cat"),
+    check("color").notEmpty().isLength({max:50}).withMessage("Invalid color "),
+    check("notes").notEmpty().isLength({max:50}).withMessage("Invalid notes"),
 ]
-const reporter = (req, res, next) => {
+
+const reporter = ( req , res , next )=>{
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if(!errors.isEmpty()){
         return res.status(404).json({
-            "success": false,
-            "code": 404,
-            "message": errors,
+            "sucess":false,
+            "code":404,
+            "message":errors,
             "data": []
-        });
+        })
     }
-    next();
-}
-module.exports = {
-    add: [
-        generatePetsValidators(),
-        reporter
-    ],
-    update: [
-        updatePetsValidators(),
-        reporter
-    ],
-    id: [
-        generateIdValidators(),
-        reporter
-    ]
-}
+        next();
+    }
+
+    module.exports = {
+
+        add:[
+            generatePetValidator,
+            reporter
+        ],
+        
+        id:[
+            generateIdPetValidator,
+            reporter
+        ],
+
+        update:[
+            updatePetValidator,
+            reporter
+        ]
+
+
+    }
