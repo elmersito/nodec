@@ -1,5 +1,6 @@
 let controller = {};
 let format = require("../format").format;
+
 controller.getAdoption = (req, res) =>
 {
     const sql = "SELECT * FROM adoptions INNER JOIN pets ON pets.id = adoptions.pet_id INNER JOIN users ON users.id = adoptions.user_id  WHERE adoptions.id = ?";
